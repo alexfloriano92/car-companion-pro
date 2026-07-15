@@ -81,3 +81,69 @@ export const adminDeleteStore = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+const AuditQueryInput = z.object({
+  entity: z.string().min(1).optional(),
+  action: z.string().min(1).optional(),
+  actor_id: z.string().uuid().optional(),
+  from: z.string().datetime().optional(),
+  to: z.string().datetime().optional(),
+  search: z.string().min(1).optional(),
+  limit: z.number().int().min(1).max(200).default(25),
+  offset: z.number().int().min(0).default(0),
+});
+
+export type AuditItem = {
+  id: string; entity: string; action: string;
+  actor_id: string | null; actor_name: string | null;
+  summary: string | null; store_id: string; entity_id: string;
+  created_at: string;
+};
+
+export const listAuditLogs = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => AuditQueryInput.parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { data: res, error } = await context.supabase.rpc("admin_list_audit", {
+      _entity: data.entity ?? undefined,
+      _action: data.action ?? undefined,
+      _actor_id: data.actor_id ?? undefined,
+      _from: data.from ?? undefined,
+      _to: data.to ?? undefined,
+      _search: data.search ?? undefined,
+      _limit: data.limit,
+      _offset: data.offset,
+    } as never);
+    if (error) throw new Error(error.message);
+    const payload = res as unknown as { total: number; items: AuditItem[]; limit: number; offset: number };
+    return {
+      total: Number(payload.total ?? 0),
+      items: (payload.items ?? []).map((i) => ({
+        id: i.id, entity: i.entity, action: i.action,
+        actor_id: i.actor_id, actor_name: i.actor_name,
+        summary: i.summary, store_id: i.store_id, entity_id: i.entity_id,
+        created_at: i.created_at,
+      })),
+      limit: payload.limit, offset: payload.offset,
+    };
+  });
+
+export const getAuditFilters = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { data, error } = await context.supabase.rpc("admin_audit_filters");
+    if (error) throw new Error(error.message);
+    const payload = data as unknown as {
+      entities: string[]; actions: string[];
+      actors: Array<{ actor_id: string; actor_name: string }>;
+    };
+    return {
+      entities: payload.entities ?? [],
+      actions: payload.actions ?? [],
+      actors: (payload.actors ?? []).map((a) => ({ actor_id: a.actor_id, actor_name: a.actor_name })),
+    };
+  });
+
+
