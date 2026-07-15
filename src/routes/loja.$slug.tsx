@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Car, MapPin, Phone, MessageCircle, Sparkles, Search, SlidersHorizontal, X, Send, Loader2, CheckCircle2 } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 import { submitLead, trackEvent } from "@/lib/leads.functions";
+import { ChatbotWidget } from "@/components/ChatbotWidget";
 
 
 const SlugInput = z.object({ slug: z.string().min(1) });
@@ -196,6 +197,8 @@ function PublicStore() {
 
       {/* Contato / Lead */}
       <ContactSection store={store} primary={primary} accent={accent} />
+
+      <ChatbotWidget storeSlug={store.slug} storeName={store.name} />
 
       {/* Sobre */}
       {store.about_text && (

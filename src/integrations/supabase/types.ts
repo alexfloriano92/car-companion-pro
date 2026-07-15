@@ -109,13 +109,102 @@ export type Database = {
           },
         ]
       }
+      banners: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          image_url: string
+          prompt: string | null
+          store_id: string
+          template: string
+          title: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          image_url: string
+          prompt?: string | null
+          store_id: string
+          template?: string
+          title: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          image_url?: string
+          prompt?: string | null
+          store_id?: string
+          template?: string
+          title?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "banners_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "banners_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lead_activities: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          kind: string
+          lead_id: string
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          kind?: string
+          lead_id: string
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          lead_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_activities_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
+          assigned_to: string | null
           created_at: string
           email: string | null
           id: string
+          lost_reason: string | null
           message: string | null
           name: string
+          next_followup: string | null
           notes: string | null
           phone: string | null
           source: string
@@ -123,13 +212,17 @@ export type Database = {
           store_id: string
           updated_at: string
           vehicle_id: string | null
+          won_at: string | null
         }
         Insert: {
+          assigned_to?: string | null
           created_at?: string
           email?: string | null
           id?: string
+          lost_reason?: string | null
           message?: string | null
           name: string
+          next_followup?: string | null
           notes?: string | null
           phone?: string | null
           source?: string
@@ -137,13 +230,17 @@ export type Database = {
           store_id: string
           updated_at?: string
           vehicle_id?: string | null
+          won_at?: string | null
         }
         Update: {
+          assigned_to?: string | null
           created_at?: string
           email?: string | null
           id?: string
+          lost_reason?: string | null
           message?: string | null
           name?: string
+          next_followup?: string | null
           notes?: string | null
           phone?: string | null
           source?: string
@@ -151,6 +248,7 @@ export type Database = {
           store_id?: string
           updated_at?: string
           vehicle_id?: string | null
+          won_at?: string | null
         }
         Relationships: [
           {
@@ -220,6 +318,56 @@ export type Database = {
         }
         Relationships: []
       }
+      posts: {
+        Row: {
+          author_id: string | null
+          content: string
+          cover_url: string | null
+          created_at: string
+          excerpt: string | null
+          id: string
+          published_at: string | null
+          slug: string
+          store_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          content?: string
+          cover_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          published_at?: string | null
+          slug: string
+          store_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          content?: string
+          cover_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          published_at?: string | null
+          slug?: string
+          store_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -244,6 +392,82 @@ export type Database = {
         }
         Relationships: []
       }
+      store_invites: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string | null
+          role: Database["public"]["Enums"]["store_role"]
+          store_id: string
+          token: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          invited_by?: string | null
+          role?: Database["public"]["Enums"]["store_role"]
+          store_id: string
+          token?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invited_by?: string | null
+          role?: Database["public"]["Enums"]["store_role"]
+          store_id?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "store_invites_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      store_members: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["store_role"]
+          store_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["store_role"]
+          store_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["store_role"]
+          store_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "store_members_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stores: {
         Row: {
           about_text: string | null
@@ -252,6 +476,9 @@ export type Database = {
           city: string | null
           created_at: string
           cta_text: string | null
+          custom_domain: string | null
+          custom_domain_token: string | null
+          custom_domain_verified: boolean
           font_body: string | null
           font_display: string | null
           hero_headline: string | null
@@ -281,6 +508,9 @@ export type Database = {
           city?: string | null
           created_at?: string
           cta_text?: string | null
+          custom_domain?: string | null
+          custom_domain_token?: string | null
+          custom_domain_verified?: boolean
           font_body?: string | null
           font_display?: string | null
           hero_headline?: string | null
@@ -310,6 +540,9 @@ export type Database = {
           city?: string | null
           created_at?: string
           cta_text?: string | null
+          custom_domain?: string | null
+          custom_domain_token?: string | null
+          custom_domain_verified?: boolean
           font_body?: string | null
           font_display?: string | null
           hero_headline?: string | null
@@ -380,6 +613,85 @@ export type Database = {
             columns: ["store_id"]
             isOneToOne: false
             referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          created_at: string
+          id: string
+          plan_snapshot: string | null
+          priority: string
+          status: string
+          store_id: string | null
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          plan_snapshot?: string | null
+          priority?: string
+          status?: string
+          store_id?: string | null
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          plan_snapshot?: string | null
+          priority?: string
+          status?: string
+          store_id?: string | null
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ticket_messages: {
+        Row: {
+          content: string
+          created_at: string
+          from_admin: boolean
+          id: string
+          ticket_id: string
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          from_admin?: boolean
+          id?: string
+          ticket_id: string
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          from_admin?: boolean
+          id?: string
+          ticket_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
             referencedColumns: ["id"]
           },
         ]
@@ -478,6 +790,22 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_store_invite: {
+        Args: { _token: string }
+        Returns: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["store_role"]
+          store_id: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "store_members"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       admin_audit_filters: { Args: never; Returns: Json }
       admin_list_audit: {
         Args: {
@@ -599,7 +927,15 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_store_access: {
+        Args: { _store_id: string; _user_id: string }
+        Returns: boolean
+      }
       jsonb_diff: { Args: { _new: Json; _old: Json }; Returns: Json }
+      plan_has_feature: {
+        Args: { _feature: string; _user_id: string }
+        Returns: boolean
+      }
       reject_payment_request: {
         Args: { _notes?: string; _request_id: string }
         Returns: {
@@ -625,6 +961,13 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      resolve_store_by_host: {
+        Args: { _host: string }
+        Returns: {
+          id: string
+          slug: string
+        }[]
+      }
       set_subscription_plan: {
         Args: { _period_end?: string; _plan: string; _user_id: string }
         Returns: undefined
@@ -635,6 +978,7 @@ export type Database = {
       billing_cycle: "monthly" | "yearly"
       payment_status: "pending" | "confirmed" | "rejected"
       plan_tier: "free" | "starter" | "pro" | "premium"
+      store_role: "owner" | "admin" | "editor" | "viewer"
       sub_status: "active" | "trialing" | "past_due" | "canceled" | "incomplete"
     }
     CompositeTypes: {
@@ -767,6 +1111,7 @@ export const Constants = {
       billing_cycle: ["monthly", "yearly"],
       payment_status: ["pending", "confirmed", "rejected"],
       plan_tier: ["free", "starter", "pro", "premium"],
+      store_role: ["owner", "admin", "editor", "viewer"],
       sub_status: ["active", "trialing", "past_due", "canceled", "incomplete"],
     },
   },
