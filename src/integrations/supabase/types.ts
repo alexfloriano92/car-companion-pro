@@ -478,6 +478,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_audit_filters: { Args: never; Returns: Json }
+      admin_list_audit: {
+        Args: {
+          _action?: string
+          _actor_id?: string
+          _entity?: string
+          _from?: string
+          _limit?: number
+          _offset?: number
+          _search?: string
+          _to?: string
+        }
+        Returns: Json
+      }
       admin_list_stores: {
         Args: never
         Returns: {
