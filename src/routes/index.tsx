@@ -363,12 +363,10 @@ function Pricing() {
       features: [
         "Tudo do Pro",
         "50+ veículos (ilimitados)",
-        "CRM completo",
-        "Facebook Marketplace",
-        "Instagram + Google Business",
-        "OLX, Webmotors, iCarros",
-        "Automação completa",
-        "Gerente de conta dedicado",
+        "CRM completo com histórico de leads",
+        "Feed XML para OLX, Webmotors e iCarros",
+        "WhatsApp Business API oficial",
+        "Suporte prioritário premium",
       ],
     },
   ];
