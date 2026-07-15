@@ -48,7 +48,7 @@ function Page() {
             </div>
             <div>
               <h1 className="font-display text-2xl font-bold">Feeds de estoque (XML)</h1>
-              <p className="text-sm text-muted-foreground">URLs públicas para publicar seus veículos em Facebook Marketplace, OLX, Webmotors e iCarros.</p>
+              <p className="text-sm text-muted-foreground">URLs públicas para publicar seus veículos em OLX, Webmotors e iCarros.</p>
             </div>
           </div>
           <FeedsPanel storeId={id} />
