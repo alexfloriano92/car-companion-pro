@@ -291,7 +291,7 @@ function Features() {
     { icon: Camera, title: "Fotos com IA", desc: "Remove fundo, corrige iluminação, adiciona marca d'água e organiza automaticamente." },
     { icon: Bot, title: "Anúncios gerados por IA", desc: "Título, descrição, hashtags e SEO otimizados para cada veículo." },
     { icon: MessageSquare, title: "CRM completo", desc: "Kanban de leads, WhatsApp, agenda de test drives e funil de vendas." },
-    { icon: Share2, title: "Publicação automática", desc: "Facebook, Instagram, OLX, Webmotors, iCarros e Google Business." },
+    { icon: Share2, title: "Feed XML para portais", desc: "Exporte seu estoque para OLX, Webmotors e iCarros via feed padronizado." },
     { icon: BarChart3, title: "Dashboard executivo", desc: "KPIs, mapa de calor, origem dos visitantes e ROI por campanha." },
     { icon: ShieldCheck, title: "LGPD & segurança", desc: "2FA, criptografia, auditoria, backups automáticos e logs completos." },
     { icon: Zap, title: "Performance máxima", desc: "SSR, ISR, CDN global, lazy loading e Core Web Vitals nota A+." },
