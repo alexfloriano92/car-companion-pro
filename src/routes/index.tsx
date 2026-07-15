@@ -291,7 +291,7 @@ function Features() {
     { icon: Camera, title: "Fotos com IA", desc: "Remove fundo, corrige iluminação, adiciona marca d'água e organiza automaticamente." },
     { icon: Bot, title: "Anúncios gerados por IA", desc: "Título, descrição, hashtags e SEO otimizados para cada veículo." },
     { icon: MessageSquare, title: "CRM completo", desc: "Kanban de leads, WhatsApp, agenda de test drives e funil de vendas." },
-    { icon: Share2, title: "Publicação automática", desc: "Facebook, Instagram, OLX, Webmotors, iCarros e Google Business." },
+    { icon: Share2, title: "Feed XML para portais", desc: "Exporte seu estoque para OLX, Webmotors e iCarros via feed padronizado." },
     { icon: BarChart3, title: "Dashboard executivo", desc: "KPIs, mapa de calor, origem dos visitantes e ROI por campanha." },
     { icon: ShieldCheck, title: "LGPD & segurança", desc: "2FA, criptografia, auditoria, backups automáticos e logs completos." },
     { icon: Zap, title: "Performance máxima", desc: "SSR, ISR, CDN global, lazy loading e Core Web Vitals nota A+." },
@@ -363,12 +363,10 @@ function Pricing() {
       features: [
         "Tudo do Pro",
         "50+ veículos (ilimitados)",
-        "CRM completo",
-        "Facebook Marketplace",
-        "Instagram + Google Business",
-        "OLX, Webmotors, iCarros",
-        "Automação completa",
-        "Gerente de conta dedicado",
+        "CRM completo com histórico de leads",
+        "Feed XML para OLX, Webmotors e iCarros",
+        "WhatsApp Business API oficial",
+        "Suporte prioritário premium",
       ],
     },
   ];
@@ -455,8 +453,8 @@ function Pricing() {
 /* ----------------------------- INTEGRATIONS ----------------------------- */
 function Integrations() {
   const names = [
-    "Webmotors", "iCarros", "OLX", "Mercado Livre", "Facebook", "Instagram",
-    "Google Business", "TikTok", "WhatsApp", "Stripe", "Mercado Pago", "Resend",
+    "Webmotors", "iCarros", "OLX", "WhatsApp Business API", "Pix",
+    "Google Analytics", "Resend",
   ];
   return (
     <section id="integracoes" className="py-24">
@@ -506,7 +504,7 @@ function FAQ() {
     { q: "Posso usar meu próprio domínio?", a: "Sim. Você recebe um subdomínio grátis e pode conectar seu domínio próprio em qualquer plano." },
     { q: "Como funciona o teste grátis?", a: "7 dias grátis em qualquer plano, sem cartão de crédito. Você só paga se decidir continuar." },
     { q: "Consigo migrar meu site atual?", a: "Sim. Nossa equipe importa seu estoque de veículos de qualquer plataforma sem custo adicional." },
-    { q: "As integrações com OLX e Webmotors são automáticas?", a: "Sim, no plano Premium. Publique um veículo uma vez e ele aparece automaticamente em todos os portais." },
+    { q: "Como funciona a integração com OLX, Webmotors e iCarros?", a: "Geramos um feed XML padronizado com seu estoque (disponível no plano Premium). Você envia essa URL ao gerente comercial do portal — cada portal exige um contrato B2B para importar o feed." },
     { q: "E se eu quiser cancelar?", a: "Você cancela quando quiser, direto do painel. Sem multa, sem burocracia." },
   ];
   return (
