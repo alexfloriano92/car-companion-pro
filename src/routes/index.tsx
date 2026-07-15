@@ -504,7 +504,7 @@ function FAQ() {
     { q: "Posso usar meu próprio domínio?", a: "Sim. Você recebe um subdomínio grátis e pode conectar seu domínio próprio em qualquer plano." },
     { q: "Como funciona o teste grátis?", a: "7 dias grátis em qualquer plano, sem cartão de crédito. Você só paga se decidir continuar." },
     { q: "Consigo migrar meu site atual?", a: "Sim. Nossa equipe importa seu estoque de veículos de qualquer plataforma sem custo adicional." },
-    { q: "As integrações com OLX e Webmotors são automáticas?", a: "Sim, no plano Premium. Publique um veículo uma vez e ele aparece automaticamente em todos os portais." },
+    { q: "Como funciona a integração com OLX, Webmotors e iCarros?", a: "Geramos um feed XML padronizado com seu estoque (disponível no plano Premium). Você envia essa URL ao gerente comercial do portal — cada portal exige um contrato B2B para importar o feed." },
     { q: "E se eu quiser cancelar?", a: "Você cancela quando quiser, direto do painel. Sem multa, sem burocracia." },
   ];
   return (
