@@ -42,7 +42,7 @@ function AdminAudit() {
 
   const setSearch = (patch: Partial<z.infer<typeof searchSchema>>, resetPage = true) => {
     navigate({
-      search: (prev) => ({ ...prev, ...patch, ...(resetPage ? { page: 1 } : {}) }),
+      search: (prev: z.infer<typeof searchSchema>) => ({ ...prev, ...patch, ...(resetPage ? { page: 1 } : {}) }),
       replace: false,
     });
   };
