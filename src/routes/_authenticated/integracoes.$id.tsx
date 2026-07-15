@@ -171,7 +171,6 @@ function FeedsPanel({ storeId }: { storeId: string }) {
   if (!slug) return <p className="text-sm text-muted-foreground">Carregando…</p>;
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   const feeds = [
-    { label: "Facebook Marketplace / Google Shopping", url: `${origin}/api/public/feed/${slug}.xml?format=facebook`, note: "Cole no Catalog Manager da Meta como fonte de dados por URL." },
     { label: "OLX / Webmotors / iCarros (genérico)", url: `${origin}/api/public/feed/${slug}.xml`, note: "Envie esta URL para o gerente comercial do portal — cada portal precisa aprovar seu cadastro B2B." },
   ];
   return (

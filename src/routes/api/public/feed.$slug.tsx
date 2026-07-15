@@ -46,34 +46,7 @@ function itemUrl(base: string, store: Store, v: Vehicle) {
   return `${base}/loja/${store.slug}?v=${v.id}`;
 }
 
-function facebookFeed(store: Store, vehicles: Vehicle[], base: string): string {
-  const items = vehicles.map((v) => `
-    <item>
-      <g:id>${esc(v.id)}</g:id>
-      <g:title>${esc(v.title)}</g:title>
-      <g:description>${esc(v.description || v.title)}</g:description>
-      <g:link>${esc(itemUrl(base, store, v))}</g:link>
-      <g:image_link>${esc(v.photos?.[0] || "")}</g:image_link>
-      <g:availability>${v.status === "sold" ? "out of stock" : "in stock"}</g:availability>
-      <g:condition>used</g:condition>
-      <g:price>${(v.price_brl ?? 0).toFixed(2)} BRL</g:price>
-      <g:brand>${esc(v.brand)}</g:brand>
-      <g:model>${esc(v.model)}</g:model>
-      <g:year>${esc(v.year)}</g:year>
-      <g:mileage>${esc(v.km)}</g:mileage>
-      <g:color>${esc(v.color)}</g:color>
-      <g:fuel_type>${esc(v.fuel)}</g:fuel_type>
-      <g:transmission>${esc(v.transmission)}</g:transmission>
-    </item>`).join("");
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
-  <channel>
-    <title>${esc(store.name)}</title>
-    <link>${esc(base)}/loja/${esc(store.slug)}</link>
-    <description>Estoque de veículos de ${esc(store.name)}</description>${items}
-  </channel>
-</rss>`;
-}
+// (Facebook Marketplace / Meta Catalog feed removido a pedido do usuário.)
 
 function genericFeed(store: Store, vehicles: Vehicle[], base: string): string {
   const items = vehicles.map((v) => `
@@ -141,11 +114,10 @@ export const Route = createFileRoute("/api/public/feed/$slug")({
           .order("created_at", { ascending: false })
           .limit(500);
 
-        const base = baseUrl(request, store as Store);
         const list = (vehicles ?? []) as Vehicle[];
-        const body = format === "facebook" || format === "fb"
-          ? facebookFeed(store as Store, list, base)
-          : genericFeed(store as Store, list, base);
+        const base = baseUrl(request, store as Store);
+        const body = genericFeed(store as Store, list, base);
+        void format;
 
         return new Response(body, {
           headers: {
