@@ -625,6 +625,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      set_subscription_plan: {
+        Args: { _period_end?: string; _plan: string; _user_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "user"

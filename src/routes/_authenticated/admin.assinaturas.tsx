@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_authenticated/admin/assinaturas")({
 const PLANS = ["free", "starter", "pro", "premium"] as const;
 const STATUSES = ["active", "trialing", "past_due", "canceled"] as const;
 const DEFAULT_LIMITS: Record<(typeof PLANS)[number], number> = {
-  free: 5, starter: 30, pro: 150, premium: 100000,
+  free: 5, starter: 25, pro: 50, premium: 100000,
 };
 
 type Row = {

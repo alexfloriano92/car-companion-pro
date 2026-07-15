@@ -31,8 +31,8 @@ export const Route = createFileRoute("/_authenticated/onboarding")({
 
 type Plan = "start" | "pro" | "premium";
 const PLANS: { id: Plan; name: string; price: string; features: string[]; highlight?: boolean }[] = [
-  { id: "start", name: "Start", price: "R$ 149/mês", features: ["Até 30 veículos", "Domínio personalizado", "SEO básico"] },
-  { id: "pro", name: "Pro", price: "R$ 299/mês", highlight: true, features: ["150 veículos", "Blog + Chatbot IA", "Múltiplos usuários"] },
+  { id: "start", name: "Start", price: "R$ 149/mês", features: ["Até 25 veículos", "Domínio personalizado", "SEO básico"] },
+  { id: "pro", name: "Pro", price: "R$ 299/mês", highlight: true, features: ["Até 50 veículos", "Blog + Chatbot IA", "Múltiplos usuários"] },
   { id: "premium", name: "Premium", price: "R$ 599/mês", features: ["Ilimitado", "CRM completo", "OLX, Webmotors, iCarros"] },
 ];
 
