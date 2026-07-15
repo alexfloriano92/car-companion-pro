@@ -1,10 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { requireStoreFeature } from "@/lib/plan-guard.server";
 
 async function assertAccess(ctx: { supabase: any; userId: string }, storeId: string) {
   const { data } = await ctx.supabase.rpc("has_store_access", { _store_id: storeId, _user_id: ctx.userId });
   if (!data) throw new Error("Sem acesso a esta loja");
+  await requireStoreFeature(ctx, storeId, "whatsapp_api");
 }
 
 export const getWhatsappConfig = createServerFn({ method: "GET" })
