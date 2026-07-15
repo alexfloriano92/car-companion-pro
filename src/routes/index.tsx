@@ -331,7 +331,7 @@ function Pricing() {
       priceYearly: 119,
       desc: "Para lojas começando a operar online.",
       features: [
-        "Até 30 veículos",
+        "Até 25 veículos",
         "Domínio personalizado",
         "WhatsApp integrado",
         "Formulário de contato",
@@ -347,7 +347,7 @@ function Pricing() {
       highlight: true,
       features: [
         "Tudo do Start",
-        "Até 150 veículos",
+        "Até 50 veículos",
         "Blog + Chatbot IA",
         "Banners automáticos",
         "Estatísticas avançadas",
@@ -362,7 +362,7 @@ function Pricing() {
       desc: "Operação completa e automação total.",
       features: [
         "Tudo do Pro",
-        "Veículos ilimitados",
+        "50+ veículos (ilimitados)",
         "CRM completo",
         "Facebook Marketplace",
         "Instagram + Google Business",
