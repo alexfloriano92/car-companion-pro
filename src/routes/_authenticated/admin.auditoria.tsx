@@ -194,9 +194,10 @@ function AdminAudit() {
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
             <button
               onClick={resetFilters}
-              className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs hover:bg-surface"
+              disabled={!hasActiveFilters}
+              className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs font-semibold transition hover:bg-surface disabled:cursor-not-allowed disabled:opacity-40"
             >
-              <RotateCcw className="h-3.5 w-3.5" /> Limpar filtros
+              <RotateCcw className="h-3.5 w-3.5" /> Limpar todos os filtros
             </button>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span>Itens por página:</span>
