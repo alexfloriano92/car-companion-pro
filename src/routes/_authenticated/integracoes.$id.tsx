@@ -117,7 +117,7 @@ function WhatsappPanel({ storeId }: { storeId: string }) {
         <div>
           <label className="text-xs font-semibold text-muted-foreground">Access Token permanente</label>
           <input type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder={c?.has_token ? "•••••••• (deixe vazio para manter)" : "EAAG..."} className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-          <p className="mt-1 text-xs text-muted-foreground">Obtenha em <a className="underline" href="https://developers.facebook.com/apps" target="_blank" rel="noreferrer">developers.facebook.com</a> → Seu app → WhatsApp → API Setup.</p>
+          <p className="mt-1 text-xs text-muted-foreground">Obtenha no painel de desenvolvedores da Meta (WhatsApp Cloud API → API Setup).</p>
         </div>
         <button onClick={() => save.mutate()} disabled={save.isPending} className="rounded-full bg-gradient-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-40">
           {save.isPending ? "Salvando…" : "Salvar configuração"}
