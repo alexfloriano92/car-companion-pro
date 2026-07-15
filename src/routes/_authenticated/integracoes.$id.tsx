@@ -48,7 +48,7 @@ function Page() {
             </div>
             <div>
               <h1 className="font-display text-2xl font-bold">Feeds de estoque (XML)</h1>
-              <p className="text-sm text-muted-foreground">URLs públicas para publicar seus veículos em Facebook Marketplace, OLX, Webmotors e iCarros.</p>
+              <p className="text-sm text-muted-foreground">URLs públicas para publicar seus veículos em OLX, Webmotors e iCarros.</p>
             </div>
           </div>
           <FeedsPanel storeId={id} />
@@ -117,7 +117,7 @@ function WhatsappPanel({ storeId }: { storeId: string }) {
         <div>
           <label className="text-xs font-semibold text-muted-foreground">Access Token permanente</label>
           <input type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder={c?.has_token ? "•••••••• (deixe vazio para manter)" : "EAAG..."} className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-          <p className="mt-1 text-xs text-muted-foreground">Obtenha em <a className="underline" href="https://developers.facebook.com/apps" target="_blank" rel="noreferrer">developers.facebook.com</a> → Seu app → WhatsApp → API Setup.</p>
+          <p className="mt-1 text-xs text-muted-foreground">Obtenha no painel de desenvolvedores da Meta (WhatsApp Cloud API → API Setup).</p>
         </div>
         <button onClick={() => save.mutate()} disabled={save.isPending} className="rounded-full bg-gradient-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-40">
           {save.isPending ? "Salvando…" : "Salvar configuração"}
@@ -133,7 +133,7 @@ function WhatsappPanel({ storeId }: { storeId: string }) {
         <button onClick={() => send.mutate()} disabled={send.isPending || !to || !body} className="rounded-full border border-primary bg-primary/10 px-5 py-2 text-sm font-semibold text-primary disabled:opacity-40">
           {send.isPending ? "Enviando…" : "Enviar"}
         </button>
-        <p className="text-xs text-muted-foreground">A Meta exige que o destinatário tenha iniciado a conversa nas últimas 24h ou você use um template aprovado.</p>
+        <p className="text-xs text-muted-foreground">A operadora exige que o destinatário tenha iniciado a conversa nas últimas 24h ou que você use um template aprovado.</p>
       </div>
 
       <div className="rounded-2xl border border-border bg-card p-6">
