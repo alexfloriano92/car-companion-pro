@@ -133,7 +133,7 @@ function WhatsappPanel({ storeId }: { storeId: string }) {
         <button onClick={() => send.mutate()} disabled={send.isPending || !to || !body} className="rounded-full border border-primary bg-primary/10 px-5 py-2 text-sm font-semibold text-primary disabled:opacity-40">
           {send.isPending ? "Enviando…" : "Enviar"}
         </button>
-        <p className="text-xs text-muted-foreground">A Meta exige que o destinatário tenha iniciado a conversa nas últimas 24h ou você use um template aprovado.</p>
+        <p className="text-xs text-muted-foreground">A operadora exige que o destinatário tenha iniciado a conversa nas últimas 24h ou que você use um template aprovado.</p>
       </div>
 
       <div className="rounded-2xl border border-border bg-card p-6">
