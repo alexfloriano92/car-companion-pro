@@ -81,3 +81,53 @@ export const adminDeleteStore = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+const AuditQueryInput = z.object({
+  entity: z.string().min(1).nullable().optional(),
+  action: z.string().min(1).nullable().optional(),
+  actor_id: z.string().uuid().nullable().optional(),
+  from: z.string().datetime().nullable().optional(),
+  to: z.string().datetime().nullable().optional(),
+  search: z.string().min(1).nullable().optional(),
+  limit: z.number().int().min(1).max(200).default(25),
+  offset: z.number().int().min(0).default(0),
+});
+
+export type AuditItem = {
+  id: string; entity: string; action: string;
+  actor_id: string | null; actor_name: string | null;
+  summary: string | null; store_id: string; entity_id: string;
+  changes: Record<string, unknown>; created_at: string;
+};
+
+export const listAuditLogs = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => AuditQueryInput.parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { data: res, error } = await context.supabase.rpc("admin_list_audit", {
+      _entity: data.entity ?? null,
+      _action: data.action ?? null,
+      _actor_id: data.actor_id ?? null,
+      _from: data.from ?? null,
+      _to: data.to ?? null,
+      _search: data.search ?? null,
+      _limit: data.limit,
+      _offset: data.offset,
+    });
+    if (error) throw new Error(error.message);
+    return res as unknown as { total: number; items: AuditItem[]; limit: number; offset: number };
+  });
+
+export const getAuditFilters = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { data, error } = await context.supabase.rpc("admin_audit_filters");
+    if (error) throw new Error(error.message);
+    return data as unknown as {
+      entities: string[]; actions: string[];
+      actors: Array<{ actor_id: string; actor_name: string }>;
+    };
+  });
+
