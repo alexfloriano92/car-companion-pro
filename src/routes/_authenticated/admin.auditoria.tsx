@@ -79,9 +79,13 @@ function AdminAudit() {
   const showingFrom = total === 0 ? 0 : (page - 1) * size + 1;
   const showingTo = Math.min(total, page * size);
 
+  const hasActiveFilters = Boolean(s.entity || s.action || s.actor || s.from || s.to || s.q.trim()) || size !== 25 || page !== 1;
+
   const resetFilters = () => {
     navigate({
-      search: () => ({ entity: "", action: "", actor: "", from: "", to: "", q: "", size, page: 1 }),
+      to: Route.fullPath,
+      search: { entity: "", action: "", actor: "", from: "", to: "", q: "", size: 25, page: 1 },
+      replace: false,
     });
   };
 
