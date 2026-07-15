@@ -1,13 +1,29 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useMemo, useState } from "react";
+import { zodValidator, fallback } from "@tanstack/zod-adapter";
+import { z } from "zod";
+import { useMemo } from "react";
 import { Activity, ShieldCheck, Loader2, Search, X, ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 import { amIAdmin } from "@/lib/payments.functions";
 import { listAuditLogs, getAuditFilters } from "@/lib/admin.functions";
 
+const searchSchema = z.object({
+  entity: fallback(z.string(), "").default(""),
+  action: fallback(z.string(), "").default(""),
+  actor: fallback(z.string(), "").default(""),
+  from: fallback(z.string(), "").default(""),
+  to: fallback(z.string(), "").default(""),
+  q: fallback(z.string(), "").default(""),
+  size: fallback(z.number().int(), 25).default(25),
+  page: fallback(z.number().int(), 1).default(1),
+});
+
+const PAGE_SIZES = [10, 25, 50, 100];
+
 export const Route = createFileRoute("/_authenticated/admin/auditoria")({
   head: () => ({ meta: [{ title: "Admin — Auditoria" }, { name: "robots", content: "noindex" }] }),
+  validateSearch: zodValidator(searchSchema),
   beforeLoad: async () => {
     const { isAdmin } = await amIAdmin();
     if (!isAdmin) throw redirect({ to: "/dashboard" });
@@ -15,20 +31,21 @@ export const Route = createFileRoute("/_authenticated/admin/auditoria")({
   component: AdminAudit,
 });
 
-const PAGE_SIZES = [10, 25, 50, 100];
-
 function AdminAudit() {
   const listFn = useServerFn(listAuditLogs);
   const filtersFn = useServerFn(getAuditFilters);
+  const navigate = useNavigate({ from: Route.fullPath });
+  const s = Route.useSearch();
 
-  const [entity, setEntity] = useState<string>("");
-  const [action, setAction] = useState<string>("");
-  const [actorId, setActorId] = useState<string>("");
-  const [from, setFrom] = useState<string>("");
-  const [to, setTo] = useState<string>("");
-  const [search, setSearch] = useState<string>("");
-  const [pageSize, setPageSize] = useState<number>(25);
-  const [page, setPage] = useState<number>(0);
+  const size = PAGE_SIZES.includes(s.size) ? s.size : 25;
+  const page = Math.max(1, s.page);
+
+  const setSearch = (patch: Partial<z.infer<typeof searchSchema>>, resetPage = true) => {
+    navigate({
+      search: (prev) => ({ ...prev, ...patch, ...(resetPage ? { page: 1 } : {}) }),
+      replace: false,
+    });
+  };
 
   const filters = useQuery({
     queryKey: ["admin-audit-filters"],
@@ -38,17 +55,18 @@ function AdminAudit() {
 
   const query = useMemo(() => {
     const toIso = (v: string) => (v ? new Date(v).toISOString() : undefined);
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     return {
-      entity: entity || undefined,
-      action: action || undefined,
-      actor_id: actorId || undefined,
-      from: toIso(from),
-      to: toIso(to),
-      search: search.trim() || undefined,
-      limit: pageSize,
-      offset: page * pageSize,
+      entity: s.entity || undefined,
+      action: s.action || undefined,
+      actor_id: isUuid.test(s.actor) ? s.actor : undefined,
+      from: toIso(s.from),
+      to: toIso(s.to),
+      search: s.q.trim() || undefined,
+      limit: size,
+      offset: (page - 1) * size,
     };
-  }, [entity, action, actorId, from, to, search, pageSize, page]);
+  }, [s.entity, s.action, s.actor, s.from, s.to, s.q, size, page]);
 
   const { data, isFetching, refetch } = useQuery({
     queryKey: ["admin-audit", query],
@@ -57,16 +75,15 @@ function AdminAudit() {
   });
 
   const total = data?.total ?? 0;
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const showingFrom = total === 0 ? 0 : page * pageSize + 1;
-  const showingTo = Math.min(total, (page + 1) * pageSize);
+  const totalPages = Math.max(1, Math.ceil(total / size));
+  const showingFrom = total === 0 ? 0 : (page - 1) * size + 1;
+  const showingTo = Math.min(total, page * size);
 
   const resetFilters = () => {
-    setEntity(""); setAction(""); setActorId(""); setFrom(""); setTo(""); setSearch("");
-    setPage(0);
+    navigate({
+      search: () => ({ entity: "", action: "", actor: "", from: "", to: "", q: "", size, page: 1 }),
+    });
   };
-
-  const applyAndResetPage = <T,>(setter: (v: T) => void) => (v: T) => { setter(v); setPage(0); };
 
   return (
     <div className="min-h-screen bg-background">
@@ -96,7 +113,7 @@ function AdminAudit() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="font-display text-3xl font-bold">Auditoria</h1>
-            <p className="mt-1 text-muted-foreground">Histórico completo de atividades com filtros e paginação.</p>
+            <p className="mt-1 text-muted-foreground">Filtros salvos na URL — copie o endereço para compartilhar a mesma visão.</p>
           </div>
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1.5 text-xs font-semibold text-primary">
             <Activity className="h-3.5 w-3.5" /> {total.toLocaleString("pt-BR")} eventos
@@ -107,8 +124,8 @@ function AdminAudit() {
           <div className="grid gap-3 md:grid-cols-6">
             <Field label="Tipo">
               <select
-                value={entity}
-                onChange={(e) => applyAndResetPage(setEntity)(e.target.value)}
+                value={s.entity}
+                onChange={(e) => setSearch({ entity: e.target.value })}
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
               >
                 <option value="">Todos</option>
@@ -117,8 +134,8 @@ function AdminAudit() {
             </Field>
             <Field label="Ação">
               <select
-                value={action}
-                onChange={(e) => applyAndResetPage(setAction)(e.target.value)}
+                value={s.action}
+                onChange={(e) => setSearch({ action: e.target.value })}
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
               >
                 <option value="">Todas</option>
@@ -127,8 +144,8 @@ function AdminAudit() {
             </Field>
             <Field label="Usuário">
               <select
-                value={actorId}
-                onChange={(e) => applyAndResetPage(setActorId)(e.target.value)}
+                value={s.actor}
+                onChange={(e) => setSearch({ actor: e.target.value })}
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
               >
                 <option value="">Todos</option>
@@ -139,15 +156,15 @@ function AdminAudit() {
             </Field>
             <Field label="De">
               <input
-                type="datetime-local" value={from}
-                onChange={(e) => applyAndResetPage(setFrom)(e.target.value)}
+                type="datetime-local" value={s.from}
+                onChange={(e) => setSearch({ from: e.target.value })}
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
               />
             </Field>
             <Field label="Até">
               <input
-                type="datetime-local" value={to}
-                onChange={(e) => applyAndResetPage(setTo)(e.target.value)}
+                type="datetime-local" value={s.to}
+                onChange={(e) => setSearch({ to: e.target.value })}
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
               />
             </Field>
@@ -155,13 +172,13 @@ function AdminAudit() {
               <div className="relative">
                 <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <input
-                  type="text" value={search} placeholder="Resumo ou nome"
-                  onChange={(e) => applyAndResetPage(setSearch)(e.target.value)}
+                  type="text" value={s.q} placeholder="Resumo ou nome"
+                  onChange={(e) => setSearch({ q: e.target.value })}
                   className="w-full rounded-lg border border-border bg-background pl-8 pr-8 py-2 text-sm"
                 />
-                {search && (
+                {s.q && (
                   <button
-                    onClick={() => applyAndResetPage(setSearch)("")}
+                    onClick={() => setSearch({ q: "" })}
                     className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                     aria-label="Limpar busca"
                   ><X className="h-4 w-4" /></button>
@@ -180,8 +197,8 @@ function AdminAudit() {
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span>Itens por página:</span>
               <select
-                value={pageSize}
-                onChange={(e) => { setPageSize(Number(e.target.value)); setPage(0); }}
+                value={size}
+                onChange={(e) => setSearch({ size: Number(e.target.value) })}
                 className="rounded-lg border border-border bg-background px-2 py-1"
               >
                 {PAGE_SIZES.map((n) => <option key={n} value={n}>{n}</option>)}
@@ -240,14 +257,14 @@ function AdminAudit() {
             <span>Mostrando {showingFrom.toLocaleString("pt-BR")}–{showingTo.toLocaleString("pt-BR")} de {total.toLocaleString("pt-BR")}</span>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setPage((p) => Math.max(0, p - 1))}
-                disabled={page === 0 || isFetching}
+                onClick={() => setSearch({ page: Math.max(1, page - 1) }, false)}
+                disabled={page <= 1 || isFetching}
                 className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 disabled:opacity-40 hover:bg-surface"
               ><ChevronLeft className="h-3.5 w-3.5" /> Anterior</button>
-              <span className="px-2">Página {page + 1} de {totalPages}</span>
+              <span className="px-2">Página {page} de {totalPages}</span>
               <button
-                onClick={() => setPage((p) => (p + 1 < totalPages ? p + 1 : p))}
-                disabled={page + 1 >= totalPages || isFetching}
+                onClick={() => setSearch({ page: page + 1 <= totalPages ? page + 1 : page }, false)}
+                disabled={page >= totalPages || isFetching}
                 className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 disabled:opacity-40 hover:bg-surface"
               >Próxima <ChevronRight className="h-3.5 w-3.5" /></button>
             </div>
