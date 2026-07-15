@@ -453,8 +453,8 @@ function Pricing() {
 /* ----------------------------- INTEGRATIONS ----------------------------- */
 function Integrations() {
   const names = [
-    "Webmotors", "iCarros", "OLX", "Mercado Livre", "Facebook", "Instagram",
-    "Google Business", "TikTok", "WhatsApp", "Stripe", "Mercado Pago", "Resend",
+    "Webmotors", "iCarros", "OLX", "WhatsApp Business API", "Pix",
+    "Google Analytics", "Resend",
   ];
   return (
     <section id="integracoes" className="py-24">
