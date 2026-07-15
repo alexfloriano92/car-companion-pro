@@ -16,6 +16,16 @@ export const Route = createFileRoute("/_authenticated/onboarding")({
   head: () => ({
     meta: [{ title: "Configurar sua loja — AutoSite" }, { name: "robots", content: "noindex" }],
   }),
+  beforeLoad: async () => {
+    const { amIAdmin } = await import("@/lib/payments.functions");
+    const { redirect } = await import("@tanstack/react-router");
+    try {
+      const res = await amIAdmin();
+      if (res?.isAdmin) throw redirect({ to: "/admin" });
+    } catch (e) {
+      if (e && typeof e === "object" && "to" in e) throw e;
+    }
+  },
   component: Onboarding,
 });
 

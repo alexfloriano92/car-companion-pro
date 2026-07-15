@@ -478,6 +478,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_list_stores: {
+        Args: never
+        Returns: {
+          created_at: string
+          id: string
+          leads_count: number
+          name: string
+          owner_email: string
+          owner_id: string
+          published: boolean
+          slug: string
+          updated_at: string
+          vehicles_count: number
+        }[]
+      }
       admin_list_subscriptions: {
         Args: never
         Returns: {
@@ -492,6 +507,23 @@ export type Database = {
           vehicle_limit: number
         }[]
       }
+      admin_list_users: {
+        Args: never
+        Returns: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          is_admin: boolean
+          last_sign_in_at: string
+          leads_count: number
+          plan: Database["public"]["Enums"]["plan_tier"]
+          stores_count: number
+          sub_status: Database["public"]["Enums"]["sub_status"]
+          vehicles_count: number
+        }[]
+      }
+      admin_overview: { Args: never; Returns: Json }
       admin_update_subscription: {
         Args: {
           _current_period_end: string

@@ -40,6 +40,11 @@ function Dashboard() {
     (async () => {
       const { data: userRes } = await supabase.auth.getUser();
       setEmail(userRes.user?.email ?? "");
+      // Admin doesn't own stores — go straight to the admin panel
+      try {
+        const res = await checkAdmin();
+        if (res?.isAdmin) { navigate({ to: "/admin" }); return; }
+      } catch { /* ignore */ }
       const { data, error } = await supabase.from("stores").select("*").order("created_at", { ascending: false });
       if (error) toast.error(error.message);
       setStores(((data as unknown) as Store[]) ?? []);
@@ -48,7 +53,7 @@ function Dashboard() {
         navigate({ to: "/onboarding" });
       }
     })();
-  }, [navigate]);
+  }, [navigate, checkAdmin]);
 
   const signOut = async () => {
     await queryClient.cancelQueries();
