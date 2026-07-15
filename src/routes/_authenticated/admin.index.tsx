@@ -54,6 +54,7 @@ function AdminHome() {
             <AdminNav to="/admin/lojas" label="Lojas" />
             <AdminNav to="/admin/pagamentos" label="Pagamentos" />
             <AdminNav to="/admin/assinaturas" label="Assinaturas" />
+            <AdminNav to="/admin/auditoria" label="Auditoria" />
           </nav>
           <button onClick={signOut} className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm hover:bg-surface">
             <LogOut className="h-4 w-4" /> Sair
