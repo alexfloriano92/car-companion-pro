@@ -37,7 +37,11 @@ export const saveWhatsappConfig = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => SaveInput.parse(d))
   .handler(async ({ data, context }) => {
     await assertAccess(context, data.store_id);
-    const patch: Record<string, unknown> = {
+    const patch: {
+      whatsapp_api_enabled: boolean;
+      whatsapp_phone_id: string | null;
+      whatsapp_api_token?: string;
+    } = {
       whatsapp_api_enabled: data.enabled,
       whatsapp_phone_id: data.phone_id || null,
     };
