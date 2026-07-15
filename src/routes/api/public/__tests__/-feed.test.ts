@@ -5,12 +5,12 @@ const rpcMock = vi.fn();
 
 vi.mock("@supabase/supabase-js", () => ({
   createClient: () => ({
-    from: (table: string) => ({
+    from: (_table: string) => ({
       select: () => ({
         eq: (_col: string, val: string) => ({
           maybeSingle: async () => ({ data: stores.get(val) ?? null }),
+          neq: () => ({ order: () => ({ limit: async () => ({ data: [] }) }) }),
         }),
-        neq: () => ({ order: () => ({ limit: async () => ({ data: [] }) }) }),
       }),
     }),
     rpc: rpcMock,
