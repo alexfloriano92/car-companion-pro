@@ -18,6 +18,7 @@ import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authentic
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedGerenciarIdRouteImport } from './routes/_authenticated/gerenciar.$id'
+import { Route as AuthenticatedAdminUsuariosRouteImport } from './routes/_authenticated/admin.usuarios'
 import { Route as AuthenticatedAdminPagamentosRouteImport } from './routes/_authenticated/admin.pagamentos'
 import { Route as AuthenticatedAdminAssinaturasRouteImport } from './routes/_authenticated/admin.assinaturas'
 
@@ -66,6 +67,12 @@ const AuthenticatedGerenciarIdRoute =
     path: '/gerenciar/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminUsuariosRoute =
+  AuthenticatedAdminUsuariosRouteImport.update({
+    id: '/admin/usuarios',
+    path: '/admin/usuarios',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminPagamentosRoute =
   AuthenticatedAdminPagamentosRouteImport.update({
     id: '/admin/pagamentos',
@@ -88,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/loja/$slug': typeof LojaSlugRoute
   '/admin/assinaturas': typeof AuthenticatedAdminAssinaturasRoute
   '/admin/pagamentos': typeof AuthenticatedAdminPagamentosRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -100,6 +108,7 @@ export interface FileRoutesByTo {
   '/loja/$slug': typeof LojaSlugRoute
   '/admin/assinaturas': typeof AuthenticatedAdminAssinaturasRoute
   '/admin/pagamentos': typeof AuthenticatedAdminPagamentosRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
@@ -114,6 +123,7 @@ export interface FileRoutesById {
   '/loja/$slug': typeof LojaSlugRoute
   '/_authenticated/admin/assinaturas': typeof AuthenticatedAdminAssinaturasRoute
   '/_authenticated/admin/pagamentos': typeof AuthenticatedAdminPagamentosRoute
+  '/_authenticated/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/_authenticated/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/admin/assinaturas'
     | '/admin/pagamentos'
+    | '/admin/usuarios'
     | '/gerenciar/$id'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/admin/assinaturas'
     | '/admin/pagamentos'
+    | '/admin/usuarios'
     | '/gerenciar/$id'
     | '/admin'
   id:
@@ -153,6 +165,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/_authenticated/admin/assinaturas'
     | '/_authenticated/admin/pagamentos'
+    | '/_authenticated/admin/usuarios'
     | '/_authenticated/gerenciar/$id'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
@@ -230,6 +243,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGerenciarIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/usuarios': {
+      id: '/_authenticated/admin/usuarios'
+      path: '/admin/usuarios'
+      fullPath: '/admin/usuarios'
+      preLoaderRoute: typeof AuthenticatedAdminUsuariosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/pagamentos': {
       id: '/_authenticated/admin/pagamentos'
       path: '/admin/pagamentos'
@@ -252,6 +272,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedAdminAssinaturasRoute: typeof AuthenticatedAdminAssinaturasRoute
   AuthenticatedAdminPagamentosRoute: typeof AuthenticatedAdminPagamentosRoute
+  AuthenticatedAdminUsuariosRoute: typeof AuthenticatedAdminUsuariosRoute
   AuthenticatedGerenciarIdRoute: typeof AuthenticatedGerenciarIdRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
@@ -261,6 +282,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedAdminAssinaturasRoute: AuthenticatedAdminAssinaturasRoute,
   AuthenticatedAdminPagamentosRoute: AuthenticatedAdminPagamentosRoute,
+  AuthenticatedAdminUsuariosRoute: AuthenticatedAdminUsuariosRoute,
   AuthenticatedGerenciarIdRoute: AuthenticatedGerenciarIdRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
