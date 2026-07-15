@@ -141,11 +141,9 @@ export const Route = createFileRoute("/api/public/feed/$slug")({
           .order("created_at", { ascending: false })
           .limit(500);
 
-        const base = baseUrl(request, store as Store);
         const list = (vehicles ?? []) as Vehicle[];
-        const body = format === "facebook" || format === "fb"
-          ? facebookFeed(store as Store, list, base)
-          : genericFeed(store as Store, list, base);
+        const body = genericFeed(store as Store, list, base);
+        void format;
 
         return new Response(body, {
           headers: {
