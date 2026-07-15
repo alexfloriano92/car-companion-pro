@@ -1,13 +1,21 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { requireStoreFeature } from "@/lib/plan-guard.server";
 
 const Statuses = z.enum(["novo", "contato", "negociacao", "ganho", "perdido"]);
+
+async function storeIdFromLead(ctx: { supabase: any }, leadId: string): Promise<string> {
+  const { data, error } = await ctx.supabase.from("leads").select("store_id").eq("id", leadId).maybeSingle();
+  if (error || !data) throw new Error("Lead não encontrado");
+  return data.store_id as string;
+}
 
 export const listLeadsWithDetails = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ store_id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
+    await requireStoreFeature(context, data.store_id, "crm");
     const { data: rows, error } = await context.supabase
       .from("leads")
       .select("id,name,phone,email,message,status,notes,assigned_to,next_followup,won_at,lost_reason,created_at,vehicle_id")
@@ -27,6 +35,8 @@ export const updateLead = createServerFn({ method: "POST" })
     lost_reason: z.string().max(500).nullable().optional(),
   }).parse(d))
   .handler(async ({ data, context }) => {
+    const storeId = await storeIdFromLead(context, data.id);
+    await requireStoreFeature(context, storeId, "crm");
     const patch: Record<string, string | null> = {};
     if (data.status !== undefined) {
       patch.status = data.status;
@@ -50,6 +60,8 @@ export const addLeadActivity = createServerFn({ method: "POST" })
     content: z.string().min(1).max(4000),
   }).parse(d))
   .handler(async ({ data, context }) => {
+    const storeId = await storeIdFromLead(context, data.lead_id);
+    await requireStoreFeature(context, storeId, "crm");
     const { data: row, error } = await context.supabase.from("lead_activities").insert({
       lead_id: data.lead_id, kind: data.kind, content: data.content, user_id: context.userId,
     }).select().single();
@@ -61,6 +73,8 @@ export const listLeadActivities = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ lead_id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
+    const storeId = await storeIdFromLead(context, data.lead_id);
+    await requireStoreFeature(context, storeId, "crm");
     const { data: rows, error } = await context.supabase.from("lead_activities")
       .select("id,kind,content,created_at,user_id").eq("lead_id", data.lead_id).order("created_at", { ascending: false });
     if (error) throw new Error(error.message);

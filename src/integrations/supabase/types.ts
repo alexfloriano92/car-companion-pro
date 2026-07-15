@@ -1035,6 +1035,10 @@ export type Database = {
         Args: { _period_end?: string; _plan: string; _user_id: string }
         Returns: undefined
       }
+      store_owner_has_feature: {
+        Args: { _feature: string; _store_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "user"

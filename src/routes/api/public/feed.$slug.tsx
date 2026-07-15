@@ -106,6 +106,16 @@ export const Route = createFileRoute("/api/public/feed/$slug")({
         if (!store || !store.published) return new Response("Not found", { status: 404 });
         if (!store.feeds_enabled) return new Response("Feed desativado", { status: 403 });
 
+        // Gate por plano: feed XML só é liberado se o dono da loja assinar um plano compatível.
+        const { data: allowed } = await supa.rpc("store_owner_has_feature", {
+          _store_id: store.id,
+          _feature: "feeds",
+        });
+        if (!allowed) {
+          return new Response("Feed XML não incluso no plano desta loja", { status: 402 });
+        }
+
+
         const { data: vehicles } = await supa
           .from("vehicles")
           .select("id,title,brand,model,year,price_brl,km,color,fuel,transmission,description,photos,status")
