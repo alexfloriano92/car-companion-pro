@@ -136,7 +136,7 @@ function AdminHome() {
   );
 }
 
-function AdminNav({ to, label }: { to: string; label: string }) {
+function AdminNav({ to, label }: { to: "/admin" | "/admin/usuarios" | "/admin/lojas" | "/admin/pagamentos" | "/admin/assinaturas"; label: string }) {
   return (
     <Link to={to} activeOptions={{ exact: to === "/admin" }} className="rounded-full px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-surface hover:text-foreground [&.active]:bg-primary/15 [&.active]:text-primary">
       {label}
