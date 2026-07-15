@@ -479,6 +479,7 @@ export type Database = {
           custom_domain: string | null
           custom_domain_token: string | null
           custom_domain_verified: boolean
+          feeds_enabled: boolean
           font_body: string | null
           font_display: string | null
           hero_headline: string | null
@@ -500,6 +501,9 @@ export type Database = {
           tagline: string | null
           updated_at: string
           whatsapp: string | null
+          whatsapp_api_enabled: boolean
+          whatsapp_api_token: string | null
+          whatsapp_phone_id: string | null
         }
         Insert: {
           about_text?: string | null
@@ -511,6 +515,7 @@ export type Database = {
           custom_domain?: string | null
           custom_domain_token?: string | null
           custom_domain_verified?: boolean
+          feeds_enabled?: boolean
           font_body?: string | null
           font_display?: string | null
           hero_headline?: string | null
@@ -532,6 +537,9 @@ export type Database = {
           tagline?: string | null
           updated_at?: string
           whatsapp?: string | null
+          whatsapp_api_enabled?: boolean
+          whatsapp_api_token?: string | null
+          whatsapp_phone_id?: string | null
         }
         Update: {
           about_text?: string | null
@@ -543,6 +551,7 @@ export type Database = {
           custom_domain?: string | null
           custom_domain_token?: string | null
           custom_domain_verified?: boolean
+          feeds_enabled?: boolean
           font_body?: string | null
           font_display?: string | null
           hero_headline?: string | null
@@ -564,6 +573,9 @@ export type Database = {
           tagline?: string | null
           updated_at?: string
           whatsapp?: string | null
+          whatsapp_api_enabled?: boolean
+          whatsapp_api_token?: string | null
+          whatsapp_phone_id?: string | null
         }
         Relationships: []
       }
@@ -778,6 +790,57 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "vehicles_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_messages: {
+        Row: {
+          body: string
+          created_at: string
+          error: string | null
+          id: string
+          lead_id: string | null
+          provider_message_id: string | null
+          status: string
+          store_id: string
+          to_phone: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          lead_id?: string | null
+          provider_message_id?: string | null
+          status?: string
+          store_id: string
+          to_phone: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          lead_id?: string | null
+          provider_message_id?: string | null
+          status?: string
+          store_id?: string
+          to_phone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_messages_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "whatsapp_messages_store_id_fkey"
             columns: ["store_id"]
             isOneToOne: false
             referencedRelation: "stores"

@@ -21,6 +21,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as BlogSlugPostSlugRouteImport } from './routes/blog.$slug.$postSlug'
 import { Route as AuthenticatedMembrosIdRouteImport } from './routes/_authenticated/membros.$id'
+import { Route as AuthenticatedIntegracoesIdRouteImport } from './routes/_authenticated/integracoes.$id'
 import { Route as AuthenticatedGerenciarIdRouteImport } from './routes/_authenticated/gerenciar.$id'
 import { Route as AuthenticatedDominioIdRouteImport } from './routes/_authenticated/dominio.$id'
 import { Route as AuthenticatedCrmIdRouteImport } from './routes/_authenticated/crm.$id'
@@ -32,6 +33,7 @@ import { Route as AuthenticatedAdminPagamentosRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminLojasRouteImport } from './routes/_authenticated/admin.lojas'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
 import { Route as AuthenticatedAdminAssinaturasRouteImport } from './routes/_authenticated/admin.assinaturas'
+import { Route as ApiPublicFeedSlugRouteImport } from './routes/api/public/feed.$slug'
 import { Route as AuthenticatedBlogIdPostIdRouteImport } from './routes/_authenticated/blog.$id.$postId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -93,6 +95,12 @@ const AuthenticatedMembrosIdRoute = AuthenticatedMembrosIdRouteImport.update({
   path: '/membros/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedIntegracoesIdRoute =
+  AuthenticatedIntegracoesIdRouteImport.update({
+    id: '/integracoes/$id',
+    path: '/integracoes/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedGerenciarIdRoute =
   AuthenticatedGerenciarIdRouteImport.update({
     id: '/gerenciar/$id',
@@ -154,6 +162,11 @@ const AuthenticatedAdminAssinaturasRoute =
     path: '/admin/assinaturas',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicFeedSlugRoute = ApiPublicFeedSlugRouteImport.update({
+  id: '/api/public/feed/$slug',
+  path: '/api/public/feed/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedBlogIdPostIdRoute =
   AuthenticatedBlogIdPostIdRouteImport.update({
     id: '/$postId',
@@ -181,10 +194,12 @@ export interface FileRoutesByFullPath {
   '/crm/$id': typeof AuthenticatedCrmIdRoute
   '/dominio/$id': typeof AuthenticatedDominioIdRoute
   '/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
+  '/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
   '/membros/$id': typeof AuthenticatedMembrosIdRoute
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -206,10 +221,12 @@ export interface FileRoutesByTo {
   '/crm/$id': typeof AuthenticatedCrmIdRoute
   '/dominio/$id': typeof AuthenticatedDominioIdRoute
   '/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
+  '/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
   '/membros/$id': typeof AuthenticatedMembrosIdRoute
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -233,10 +250,12 @@ export interface FileRoutesById {
   '/_authenticated/crm/$id': typeof AuthenticatedCrmIdRoute
   '/_authenticated/dominio/$id': typeof AuthenticatedDominioIdRoute
   '/_authenticated/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
+  '/_authenticated/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
   '/_authenticated/membros/$id': typeof AuthenticatedMembrosIdRoute
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -260,10 +279,12 @@ export interface FileRouteTypes {
     | '/crm/$id'
     | '/dominio/$id'
     | '/gerenciar/$id'
+    | '/integracoes/$id'
     | '/membros/$id'
     | '/blog/$slug/$postSlug'
     | '/admin/'
     | '/blog/$id/$postId'
+    | '/api/public/feed/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -285,10 +306,12 @@ export interface FileRouteTypes {
     | '/crm/$id'
     | '/dominio/$id'
     | '/gerenciar/$id'
+    | '/integracoes/$id'
     | '/membros/$id'
     | '/blog/$slug/$postSlug'
     | '/admin'
     | '/blog/$id/$postId'
+    | '/api/public/feed/$slug'
   id:
     | '__root__'
     | '/'
@@ -311,10 +334,12 @@ export interface FileRouteTypes {
     | '/_authenticated/crm/$id'
     | '/_authenticated/dominio/$id'
     | '/_authenticated/gerenciar/$id'
+    | '/_authenticated/integracoes/$id'
     | '/_authenticated/membros/$id'
     | '/blog/$slug/$postSlug'
     | '/_authenticated/admin/'
     | '/_authenticated/blog/$id/$postId'
+    | '/api/public/feed/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -324,6 +349,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   BlogSlugRoute: typeof BlogSlugRouteWithChildren
   LojaSlugRoute: typeof LojaSlugRoute
+  ApiPublicFeedSlugRoute: typeof ApiPublicFeedSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -412,6 +438,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMembrosIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/integracoes/$id': {
+      id: '/_authenticated/integracoes/$id'
+      path: '/integracoes/$id'
+      fullPath: '/integracoes/$id'
+      preLoaderRoute: typeof AuthenticatedIntegracoesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/gerenciar/$id': {
       id: '/_authenticated/gerenciar/$id'
       path: '/gerenciar/$id'
@@ -489,6 +522,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAssinaturasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/feed/$slug': {
+      id: '/api/public/feed/$slug'
+      path: '/api/public/feed/$slug'
+      fullPath: '/api/public/feed/$slug'
+      preLoaderRoute: typeof ApiPublicFeedSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/blog/$id/$postId': {
       id: '/_authenticated/blog/$id/$postId'
       path: '/$postId'
@@ -525,6 +565,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCrmIdRoute: typeof AuthenticatedCrmIdRoute
   AuthenticatedDominioIdRoute: typeof AuthenticatedDominioIdRoute
   AuthenticatedGerenciarIdRoute: typeof AuthenticatedGerenciarIdRoute
+  AuthenticatedIntegracoesIdRoute: typeof AuthenticatedIntegracoesIdRoute
   AuthenticatedMembrosIdRoute: typeof AuthenticatedMembrosIdRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
@@ -544,6 +585,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCrmIdRoute: AuthenticatedCrmIdRoute,
   AuthenticatedDominioIdRoute: AuthenticatedDominioIdRoute,
   AuthenticatedGerenciarIdRoute: AuthenticatedGerenciarIdRoute,
+  AuthenticatedIntegracoesIdRoute: AuthenticatedIntegracoesIdRoute,
   AuthenticatedMembrosIdRoute: AuthenticatedMembrosIdRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
@@ -570,6 +612,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   BlogSlugRoute: BlogSlugRouteWithChildren,
   LojaSlugRoute: LojaSlugRoute,
+  ApiPublicFeedSlugRoute: ApiPublicFeedSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
