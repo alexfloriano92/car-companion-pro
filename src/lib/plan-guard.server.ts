@@ -1,15 +1,20 @@
-import type { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-
-type Ctx = Parameters<Parameters<typeof requireSupabaseAuth>[0]>[0]["context"];
-
 /**
  * Garante que o dono da loja possui o recurso no plano assinado.
  * Lança erro se não tiver — usado em server functions para gating de features.
  */
 export async function requireStoreFeature(
-  ctx: { supabase: Ctx["supabase"] },
+  ctx: { supabase: { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }> } },
   storeId: string,
-  feature: "whatsapp_api" | "feeds" | "crm" | "blog" | "banners" | "chatbot" | "custom_domain" | "multiple_users" | "priority_support",
+  feature:
+    | "whatsapp_api"
+    | "feeds"
+    | "crm"
+    | "blog"
+    | "banners"
+    | "chatbot"
+    | "custom_domain"
+    | "multiple_users"
+    | "priority_support",
 ): Promise<void> {
   const { data, error } = await ctx.supabase.rpc("store_owner_has_feature", {
     _store_id: storeId,
