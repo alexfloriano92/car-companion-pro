@@ -13,7 +13,18 @@ export const getAdminOverview = createServerFn({ method: "GET" })
     await assertAdmin(context);
     const { data, error } = await context.supabase.rpc("admin_overview");
     if (error) throw new Error(error.message);
-    return data as Record<string, unknown>;
+    return data as unknown as {
+      total_users: number; users_last_30d: number;
+      total_stores: number; published_stores: number;
+      total_vehicles: number; available_vehicles: number;
+      total_leads: number; leads_last_30d: number;
+      pending_payments: number; confirmed_revenue_brl: number;
+      active_subs: number;
+      plan_breakdown: Record<string, number>;
+      recent_signups: Array<{ id: string; email: string; created_at: string }>;
+      recent_leads: Array<{ id: string; name: string | null; phone: string | null; email: string | null; store_id: string; vehicle_id: string | null; created_at: string }>;
+      recent_audit: Array<{ id: string; entity: string; action: string; actor_name: string | null; summary: string | null; created_at: string }>;
+    };
   });
 
 export const listAllUsers = createServerFn({ method: "GET" })
