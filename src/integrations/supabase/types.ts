@@ -263,6 +263,7 @@ export type Database = {
           onboarded: boolean
           owner_id: string
           phone: string | null
+          plan: Database["public"]["Enums"]["plan_tier"]
           primary_color: string | null
           published: boolean
           secondary_color: string | null
@@ -291,6 +292,7 @@ export type Database = {
           onboarded?: boolean
           owner_id: string
           phone?: string | null
+          plan?: Database["public"]["Enums"]["plan_tier"]
           primary_color?: string | null
           published?: boolean
           secondary_color?: string | null
@@ -319,6 +321,7 @@ export type Database = {
           onboarded?: boolean
           owner_id?: string
           phone?: string | null
+          plan?: Database["public"]["Enums"]["plan_tier"]
           primary_color?: string | null
           published?: boolean
           secondary_color?: string | null
