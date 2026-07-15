@@ -21,6 +21,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as BlogSlugPostSlugRouteImport } from './routes/blog.$slug.$postSlug'
 import { Route as AuthenticatedMembrosIdRouteImport } from './routes/_authenticated/membros.$id'
+import { Route as AuthenticatedIntegracoesIdRouteImport } from './routes/_authenticated/integracoes.$id'
 import { Route as AuthenticatedGerenciarIdRouteImport } from './routes/_authenticated/gerenciar.$id'
 import { Route as AuthenticatedDominioIdRouteImport } from './routes/_authenticated/dominio.$id'
 import { Route as AuthenticatedCrmIdRouteImport } from './routes/_authenticated/crm.$id'
@@ -94,6 +95,12 @@ const AuthenticatedMembrosIdRoute = AuthenticatedMembrosIdRouteImport.update({
   path: '/membros/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedIntegracoesIdRoute =
+  AuthenticatedIntegracoesIdRouteImport.update({
+    id: '/integracoes/$id',
+    path: '/integracoes/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedGerenciarIdRoute =
   AuthenticatedGerenciarIdRouteImport.update({
     id: '/gerenciar/$id',
@@ -187,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/crm/$id': typeof AuthenticatedCrmIdRoute
   '/dominio/$id': typeof AuthenticatedDominioIdRoute
   '/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
+  '/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
   '/membros/$id': typeof AuthenticatedMembrosIdRoute
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -213,6 +221,7 @@ export interface FileRoutesByTo {
   '/crm/$id': typeof AuthenticatedCrmIdRoute
   '/dominio/$id': typeof AuthenticatedDominioIdRoute
   '/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
+  '/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
   '/membros/$id': typeof AuthenticatedMembrosIdRoute
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -241,6 +250,7 @@ export interface FileRoutesById {
   '/_authenticated/crm/$id': typeof AuthenticatedCrmIdRoute
   '/_authenticated/dominio/$id': typeof AuthenticatedDominioIdRoute
   '/_authenticated/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
+  '/_authenticated/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
   '/_authenticated/membros/$id': typeof AuthenticatedMembrosIdRoute
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -269,6 +279,7 @@ export interface FileRouteTypes {
     | '/crm/$id'
     | '/dominio/$id'
     | '/gerenciar/$id'
+    | '/integracoes/$id'
     | '/membros/$id'
     | '/blog/$slug/$postSlug'
     | '/admin/'
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/crm/$id'
     | '/dominio/$id'
     | '/gerenciar/$id'
+    | '/integracoes/$id'
     | '/membros/$id'
     | '/blog/$slug/$postSlug'
     | '/admin'
@@ -322,6 +334,7 @@ export interface FileRouteTypes {
     | '/_authenticated/crm/$id'
     | '/_authenticated/dominio/$id'
     | '/_authenticated/gerenciar/$id'
+    | '/_authenticated/integracoes/$id'
     | '/_authenticated/membros/$id'
     | '/blog/$slug/$postSlug'
     | '/_authenticated/admin/'
@@ -423,6 +436,13 @@ declare module '@tanstack/react-router' {
       path: '/membros/$id'
       fullPath: '/membros/$id'
       preLoaderRoute: typeof AuthenticatedMembrosIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/integracoes/$id': {
+      id: '/_authenticated/integracoes/$id'
+      path: '/integracoes/$id'
+      fullPath: '/integracoes/$id'
+      preLoaderRoute: typeof AuthenticatedIntegracoesIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/gerenciar/$id': {
@@ -545,6 +565,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCrmIdRoute: typeof AuthenticatedCrmIdRoute
   AuthenticatedDominioIdRoute: typeof AuthenticatedDominioIdRoute
   AuthenticatedGerenciarIdRoute: typeof AuthenticatedGerenciarIdRoute
+  AuthenticatedIntegracoesIdRoute: typeof AuthenticatedIntegracoesIdRoute
   AuthenticatedMembrosIdRoute: typeof AuthenticatedMembrosIdRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
@@ -564,6 +585,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCrmIdRoute: AuthenticatedCrmIdRoute,
   AuthenticatedDominioIdRoute: AuthenticatedDominioIdRoute,
   AuthenticatedGerenciarIdRoute: AuthenticatedGerenciarIdRoute,
+  AuthenticatedIntegracoesIdRoute: AuthenticatedIntegracoesIdRoute,
   AuthenticatedMembrosIdRoute: AuthenticatedMembrosIdRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }

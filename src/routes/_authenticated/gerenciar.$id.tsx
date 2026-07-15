@@ -159,13 +159,14 @@ function Manage() {
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-7">
           {[
             { href: `/dominio/${store.id}`, label: "Domínio", icon: "🌐" },
             { href: `/membros/${store.id}`, label: "Equipe", icon: "👥" },
             { href: `/blog/${store.id}`, label: "Blog", icon: "📝" },
             { href: `/banners/${store.id}`, label: "Banners IA", icon: "✨" },
             { href: `/crm/${store.id}`, label: "CRM", icon: "📊" },
+            { href: `/integracoes/${store.id}`, label: "Integrações", icon: "🔌" },
             { href: `/suporte`, label: "Suporte", icon: "💬" },
           ].map((r) => (
             <a key={r.label} href={r.href} className="rounded-2xl border border-border bg-card p-3 text-center hover:border-primary transition">
