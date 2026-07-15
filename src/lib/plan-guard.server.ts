@@ -3,7 +3,7 @@
  * Lança erro se não tiver — usado em server functions para gating de features.
  */
 export async function requireStoreFeature(
-  ctx: { supabase: { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }> } },
+  ctx: { supabase: any },
   storeId: string,
   feature:
     | "whatsapp_api"
