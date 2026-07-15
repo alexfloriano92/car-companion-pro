@@ -159,6 +159,24 @@ function Manage() {
           </div>
         </div>
 
+        <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+          {[
+            { href: `/dominio/${store.id}`, label: "Domínio", icon: "🌐" },
+            { href: `/membros/${store.id}`, label: "Equipe", icon: "👥" },
+            { href: `/blog/${store.id}`, label: "Blog", icon: "📝" },
+            { href: `/banners/${store.id}`, label: "Banners IA", icon: "✨" },
+            { href: `/crm/${store.id}`, label: "CRM", icon: "📊" },
+            { href: `/suporte`, label: "Suporte", icon: "💬" },
+          ].map((r) => (
+            <a key={r.label} href={r.href} className="rounded-2xl border border-border bg-card p-3 text-center hover:border-primary transition">
+              <div className="text-2xl">{r.icon}</div>
+              <div className="mt-1 text-xs font-semibold">{r.label}</div>
+            </a>
+          ))}
+        </div>
+
+
+
         <div className="mt-6 flex gap-1 border-b border-border overflow-x-auto">
           {([
             ["info", "Informações"],
