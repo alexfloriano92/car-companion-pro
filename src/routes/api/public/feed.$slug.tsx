@@ -142,6 +142,7 @@ export const Route = createFileRoute("/api/public/feed/$slug")({
           .limit(500);
 
         const list = (vehicles ?? []) as Vehicle[];
+        const base = baseUrl(request, store as Store);
         const body = genericFeed(store as Store, list, base);
         void format;
 
