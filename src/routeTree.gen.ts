@@ -32,6 +32,7 @@ import { Route as AuthenticatedAdminPagamentosRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminLojasRouteImport } from './routes/_authenticated/admin.lojas'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
 import { Route as AuthenticatedAdminAssinaturasRouteImport } from './routes/_authenticated/admin.assinaturas'
+import { Route as ApiPublicFeedSlugRouteImport } from './routes/api/public/feed.$slug'
 import { Route as AuthenticatedBlogIdPostIdRouteImport } from './routes/_authenticated/blog.$id.$postId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -154,6 +155,11 @@ const AuthenticatedAdminAssinaturasRoute =
     path: '/admin/assinaturas',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicFeedSlugRoute = ApiPublicFeedSlugRouteImport.update({
+  id: '/api/public/feed/$slug',
+  path: '/api/public/feed/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedBlogIdPostIdRoute =
   AuthenticatedBlogIdPostIdRouteImport.update({
     id: '/$postId',
@@ -185,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -210,6 +217,7 @@ export interface FileRoutesByTo {
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -237,6 +245,7 @@ export interface FileRoutesById {
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -264,6 +273,7 @@ export interface FileRouteTypes {
     | '/blog/$slug/$postSlug'
     | '/admin/'
     | '/blog/$id/$postId'
+    | '/api/public/feed/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -289,6 +299,7 @@ export interface FileRouteTypes {
     | '/blog/$slug/$postSlug'
     | '/admin'
     | '/blog/$id/$postId'
+    | '/api/public/feed/$slug'
   id:
     | '__root__'
     | '/'
@@ -315,6 +326,7 @@ export interface FileRouteTypes {
     | '/blog/$slug/$postSlug'
     | '/_authenticated/admin/'
     | '/_authenticated/blog/$id/$postId'
+    | '/api/public/feed/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -324,6 +336,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   BlogSlugRoute: typeof BlogSlugRouteWithChildren
   LojaSlugRoute: typeof LojaSlugRoute
+  ApiPublicFeedSlugRoute: typeof ApiPublicFeedSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -489,6 +502,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAssinaturasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/feed/$slug': {
+      id: '/api/public/feed/$slug'
+      path: '/api/public/feed/$slug'
+      fullPath: '/api/public/feed/$slug'
+      preLoaderRoute: typeof ApiPublicFeedSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/blog/$id/$postId': {
       id: '/_authenticated/blog/$id/$postId'
       path: '/$postId'
@@ -570,6 +590,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   BlogSlugRoute: BlogSlugRouteWithChildren,
   LojaSlugRoute: LojaSlugRoute,
+  ApiPublicFeedSlugRoute: ApiPublicFeedSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
