@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage --coverage.reporter=text --coverage.reporter=html --coverage.reporter=json-summary --coverage.reporter=lcov",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
