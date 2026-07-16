@@ -29,16 +29,21 @@ jobs:
         if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
         run: |
           set -e
-          PCT=$(node -e "const s=require('./coverage/coverage-summary.json');process.stdout.write(String(s.total.lines.pct))")
-          PCT_INT=${PCT%.*}
-          if   [ "$PCT_INT" -ge 90 ]; then COLOR=brightgreen
-          elif [ "$PCT_INT" -ge 80 ]; then COLOR=green
-          elif [ "$PCT_INT" -ge 70 ]; then COLOR=yellowgreen
-          elif [ "$PCT_INT" -ge 60 ]; then COLOR=yellow
-          elif [ "$PCT_INT" -ge 50 ]; then COLOR=orange
-          else COLOR=red
+          if [ -f ./coverage/coverage-summary.json ]; then
+            PCT=$(node -e "const s=require('./coverage/coverage-summary.json');process.stdout.write(String(s.total.lines.pct))")
+            PCT_INT=${PCT%.*}
+            if   [ "$PCT_INT" -ge 90 ]; then COLOR=brightgreen
+            elif [ "$PCT_INT" -ge 80 ]; then COLOR=green
+            elif [ "$PCT_INT" -ge 70 ]; then COLOR=yellowgreen
+            elif [ "$PCT_INT" -ge 60 ]; then COLOR=yellow
+            elif [ "$PCT_INT" -ge 50 ]; then COLOR=orange
+            else COLOR=red
+            fi
+            BADGE="https://img.shields.io/badge/coverage-${PCT}%25-${COLOR}"
+          else
+            echo "coverage-summary.json not found; using 'unknown' fallback badge."
+            BADGE="https://img.shields.io/badge/coverage-unknown-lightgrey"
           fi
-          BADGE="https://img.shields.io/badge/coverage-${PCT}%25-${COLOR}"
           if [ ! -f README.md ]; then echo "# ${GITHUB_REPOSITORY##*/}" > README.md; fi
           if grep -q '<!-- coverage-badge -->' README.md; then
             sed -i "s|<!-- coverage-badge -->.*<!-- /coverage-badge -->|<!-- coverage-badge -->![Coverage](${BADGE})<!-- /coverage-badge -->|" README.md
